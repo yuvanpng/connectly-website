@@ -1,0 +1,1921 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CONNECTLY — Premium Mobiles. Better Connected.</title>
+<meta name="description" content="Discover premium smartphones, carefully selected pre-owned devices, and the latest mobile essentials at Connectly.">
+<meta name="theme-color" content="#0A0A0B">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="preload" as="image" href="assets/connectly-logo-white.png">
+<link rel="preload" as="image" href="assets/hero-iphone-trio.webp">
+<style>
+/* ---------- Design Tokens ---------- */
+:root{
+  --bg:#0A0A0B;
+  --bg-2:#111113;
+  --bg-3:#18181B;
+  --line:rgba(237,237,232,.08);
+  --line-2:rgba(237,237,232,.15);
+  --text:#F2F2EE;
+  --muted:rgba(242,242,238,.64);
+  --faint:rgba(242,242,238,.38);
+  --accent:#A8C7FA;
+  --accent-bright:#CFE1FF;
+  --accent-ink:#07090D;
+  --platinum:#D6DCE5;
+  --ease:cubic-bezier(.32,.72,0,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --r-card:26px;
+  --r-inner:20px;
+  --gutter:clamp(16px,3.6vw,48px);
+  /* z scale: 0 gl canvas, 1 content, 20 nav, 30 menu overlay, 40 loader, 45 modal, 50 grain */
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color-scheme:dark;-webkit-text-size-adjust:100%;overflow-x:clip}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:"Satoshi",system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
+}
+body.is-loading{overflow:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+
+.display{font-family:"Clash Display","Satoshi",sans-serif;font-weight:600;letter-spacing:-.022em;line-height:.94}
+.tnum{font-variant-numeric:tabular-nums}
+.wrap{width:100%;max-width:1440px;margin:0 auto;padding:0 var(--gutter)}
+.accent{color:var(--accent)}
+.muted{color:var(--muted)}
+.line{display:block;overflow:hidden;padding-bottom:.04em}
+.line>span{display:inline-block;will-change:transform}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Subtle film grain */
+body::after{
+  content:"";position:fixed;inset:-50%;z-index:50;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- WebGL Stage ---------- */
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+main{position:relative;z-index:1}
+
+/* ---------- Preloader ---------- */
+.loader{position:fixed;inset:0;z-index:40;background:var(--bg);display:grid;align-content:end;padding:var(--gutter)}
+.loader-count{font-size:clamp(4.5rem,20vw,18rem);line-height:.82;color:var(--text)}
+.loader-count small{font-size:.24em;color:var(--accent);margin-left:.1em;vertical-align:top}
+.loader-bar{height:2px;background:var(--line);margin-top:20px;overflow:hidden}
+.loader-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--platinum),var(--accent));transform-origin:left;transform:scaleX(0)}
+.loader-meta{display:flex;justify-content:space-between;margin-top:12px;color:var(--muted);font-size:13.5px;letter-spacing:.03em}
+
+/* ---------- Buttons & Pills ---------- */
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;white-space:nowrap;
+  min-height:48px;height:52px;padding:0 8px 0 22px;border-radius:999px;font-weight:500;font-size:15px;
+  transition:transform .45s var(--ease),background-color .4s var(--ease),color .4s var(--ease),box-shadow .4s var(--ease);
+}
+.btn:active{transform:scale(.97)}
+.btn .ico{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;font-size:16px;flex:none;transition:transform .5s var(--ease)}
+.btn:hover .ico{transform:translate(2px,-2px) scale(1.05)}
+.btn-primary{background:var(--text);color:var(--accent-ink)}
+.btn-primary .ico{background:var(--accent-ink);color:var(--text)}
+.btn-primary:hover{background:#FFFFFF}
+.btn-accent{background:var(--accent);color:var(--accent-ink)}
+.btn-accent .ico{background:var(--accent-ink);color:var(--accent)}
+.btn-accent:hover{background:var(--accent-bright)}
+.btn-ghost{background:rgba(242,242,238,.06);color:var(--text);box-shadow:inset 0 0 0 1px var(--line-2)}
+.btn-ghost .ico{background:rgba(242,242,238,.09)}
+.btn-ghost:hover{background:rgba(242,242,238,.12)}
+.btn-sm{min-height:44px;height:44px;padding:0 6px 0 18px;font-size:14px;gap:10px}
+.btn-sm .ico{width:32px;height:32px;font-size:14px}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;
+  color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;
+}
+.eyebrow-dot{width:6px;height:6px;border-radius:999px;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+
+/* Double-shell card elevation preserved from template */
+.shell{padding:5px;border-radius:var(--r-card);background:rgba(242,242,238,.03);box-shadow:inset 0 0 0 1px var(--line)}
+.core{
+  height:100%;border-radius:var(--r-inner);background:var(--bg-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);position:relative;overflow:hidden;
+  padding:clamp(18px,2.4vw,30px);display:flex;flex-direction:column;
+}
+
+/* ---------- Navigation ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:20;
+  padding:12px var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:16px;
+  height:68px;
+}
+.nav::before{
+  content:"";position:absolute;inset:0 0 -22px;z-index:-1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(10,10,11,.9) 18%,rgba(10,10,11,0));
+}
+.brand{display:inline-flex;align-items:center;gap:10px;min-height:44px}
+.brand img{height:22px;width:auto;display:block}
+.nav-links{
+  position:relative;display:none;gap:4px;padding:5px;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),inset 0 1px 0 rgba(255,255,255,.12),0 10px 30px -12px rgba(0,0,0,.6);
+}
+.nav-links a{position:relative;z-index:1;padding:8px 16px;border-radius:999px;font-size:14px;color:var(--muted);transition:color .4s var(--ease)}
+.nav-links a:hover,.nav-links a.is-hover{color:var(--text)}
+.nav-glide{
+  position:absolute;top:5px;left:0;height:calc(100% - 10px);width:0;border-radius:999px;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.06));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 1px 0 rgba(255,255,255,.2);
+  will-change:transform,width;transition:opacity .35s var(--ease);
+}
+.nav-links.has-glide .nav-glide{opacity:1}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-cta-desktop{display:none}
+.nav-cta-mobile{
+  display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border-radius:999px;
+  background:rgba(242,242,238,.08);box-shadow:inset 0 0 0 1px var(--line-2);
+  font-size:13.5px;font-weight:500;color:var(--text);
+}
+.burger{
+  display:grid;place-items:center;width:44px;height:44px;border-radius:999px;position:relative;
+  background:rgba(17,17,19,.72);box-shadow:inset 0 0 0 1px var(--line-2);
+}
+.burger i{position:absolute;left:13px;right:13px;height:1.5px;background:var(--text);transition:transform .55s var(--ease),top .55s var(--ease)}
+.burger i:nth-child(1){top:18px}.burger i:nth-child(2){top:25px}
+.menu-open .burger i:nth-child(1){top:21.5px;transform:rotate(45deg)}
+.menu-open .burger i:nth-child(2){top:21.5px;transform:rotate(-45deg)}
+.menu{
+  position:fixed;inset:0;z-index:30;background:rgba(10,10,11,.92);
+  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+  display:flex;flex-direction:column;justify-content:center;padding:84px var(--gutter) 32px;gap:8px;
+  opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s linear .5s;
+}
+.menu a{
+  font-family:"Clash Display",sans-serif;font-size:clamp(2.2rem,10vw,3.8rem);font-weight:600;line-height:1.12;
+  padding:6px 0;transform:translateY(32px);opacity:0;transition:transform .7s var(--ease),opacity .7s var(--ease);
+}
+.menu-open .menu{opacity:1;visibility:visible;transition:opacity .5s var(--ease)}
+.menu-open .menu a{transform:none;opacity:1}
+.menu-open .menu a:nth-child(2){transition-delay:.04s}
+.menu-open .menu a:nth-child(3){transition-delay:.08s}
+.menu-open .menu a:nth-child(4){transition-delay:.12s}
+.menu-open .menu a:nth-child(5){transition-delay:.16s}
+.menu-open .menu-foot{opacity:1;transform:none;transition-delay:.2s}
+.menu-foot{
+  margin-top:20px;padding-top:20px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;
+  opacity:0;transform:translateY(20px);transition:transform .7s var(--ease),opacity .7s var(--ease);
+}
+.menu-open .nav{z-index:35}
+
+/* ---------- 01. Cinematic Hero (Mobile-First) ---------- */
+.hero{
+  position:relative;min-height:100svh;min-height:100dvh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:82px 0 clamp(26px,4.5vh,52px);
+}
+.hero-stage-spacer{height:clamp(190px,36dvh,320px);flex:none;pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:18px;align-items:end}
+.hero h1{
+  font-size:clamp(2.45rem,10.6vw,6.8rem);line-height:.9;text-transform:uppercase;
+  letter-spacing:-.025em;
+}
+.hero-side p{font-size:15.5px;color:var(--muted);max-width:38ch;margin-bottom:20px}
+.hero-side p strong{color:var(--text);font-weight:500}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:10px}
+.hero-ctas .btn{flex:1 1 auto;min-width:155px}
+.hero-fade{
+  position:absolute;inset:auto 0 0 0;height:42dvh;
+  background:linear-gradient(to top,var(--bg) 12%,rgba(10,10,11,.62) 55%,transparent);
+  pointer-events:none;z-index:-1;
+}
+
+/* ---------- 02. Brand Introduction ---------- */
+.intro-stage{
+  position:relative;padding:clamp(64px,10vw,140px) 0 clamp(64px,10vw,120px);
+}
+.intro-stage-grid{display:grid;grid-template-columns:1fr;gap:clamp(28px,4vw,56px);align-items:center}
+.intro-copy{position:relative;z-index:2}
+.intro-copy h2{font-size:clamp(2.1rem,7.2vw,4.5rem);max-width:14ch;margin-bottom:18px}
+.manifesto-text{
+  font-family:"Clash Display","Satoshi",sans-serif;font-weight:500;
+  font-size:clamp(1.35rem,3.1vw,2.45rem);line-height:1.22;letter-spacing:-.012em;max-width:26ch;
+}
+.manifesto-text .w{opacity:.18}
+.pill-img{
+  display:inline-block;width:2.1em;height:.86em;border-radius:999px;vertical-align:-.12em;margin:0 .12em;
+  background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);
+}
+.intro-visual-wrap{position:relative}
+.intro-visual-shell .core{padding:0;aspect-ratio:16/10}
+.intro-visual-shell img{width:100%;height:100%;object-fit:cover;object-position:62% 50%}
+.intro-visual-caption{
+  position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;align-items:center;
+  font-size:12.5px;color:var(--muted);padding:8px 14px;border-radius:999px;
+  background:rgba(10,10,11,.72);backdrop-filter:blur(12px);border:1px solid var(--line);
+}
+.intro-3d-spacer{height:clamp(220px,34dvh,290px);display:flex;align-items:flex-end}
+.intro-3d-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  background:rgba(17,17,19,.78);border:1px solid var(--line-2);font-size:12.5px;color:var(--muted);
+}
+
+/* ---------- Solid Surface Transition ---------- */
+.solid{background:var(--bg);position:relative;z-index:2}
+
+/* ---------- 03. Explore Premium Mobiles ---------- */
+.mobiles{padding:clamp(72px,10vw,140px) 0}
+.section-head{display:grid;gap:14px;margin-bottom:clamp(28px,4vw,48px)}
+.section-head h2{font-size:clamp(2.2rem,6.5vw,4.8rem);max-width:15ch}
+.section-head p{color:var(--muted);max-width:44ch;font-size:16px}
+.filter-bar{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;
+  margin-bottom:clamp(24px,3.5vw,40px);
+}
+.filter-pills{
+  display:inline-flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:999px;
+  background:rgba(242,242,238,.04);box-shadow:inset 0 0 0 1px var(--line);max-width:100%;
+}
+.filter-pills button{
+  min-height:40px;padding:8px 16px;border-radius:999px;font-size:13.5px;font-weight:500;color:var(--muted);
+  transition:background-color .35s var(--ease),color .35s var(--ease);
+}
+.filter-pills button[aria-pressed="true"]{background:var(--text);color:var(--accent-ink)}
+.sample-note{
+  display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);
+  padding:7px 13px;border-radius:999px;background:rgba(168,199,250,.08);border:1px solid rgba(168,199,250,.22);
+}
+
+.cat-block{margin-top:clamp(28px,4vw,48px)}
+.cat-block[hidden]{display:none}
+.cat-head{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;
+  padding-bottom:16px;margin-bottom:20px;border-bottom:1px solid var(--line-2);
+}
+.cat-head h3{font-family:"Clash Display",sans-serif;font-weight:500;font-size:clamp(1.45rem,3vw,2.1rem);letter-spacing:-.015em}
+.cat-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;
+  font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;
+}
+.cat-badge.new{background:rgba(168,199,250,.14);color:var(--accent-bright);border:1px solid rgba(168,199,250,.28)}
+.cat-badge.pre{background:rgba(214,220,229,.08);color:var(--platinum);border:1px solid var(--line-2)}
+
+.phone-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.phone-card .core{padding:0;justify-content:space-between}
+.phone-media{
+  position:relative;aspect-ratio:16/11;background:radial-gradient(circle at 50% 45%,#1d222a 0%,#0c0d10 75%);
+  overflow:hidden;border-bottom:1px solid var(--line);
+}
+.phone-media.is-light{background:linear-gradient(180deg,#f5f6f8 0%,#e9ecf1 100%)}
+.phone-media img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.phone-media.is-contain img{object-fit:contain;padding:14px}
+.phone-card:hover .phone-media img{transform:scale(1.04)}
+.phone-tags{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
+.tag-pill{
+  padding:5px 10px;border-radius:999px;font-size:11.5px;font-weight:500;letter-spacing:.03em;
+  background:rgba(10,10,11,.78);color:var(--text);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px);
+}
+.tag-pill.sample{color:var(--accent-bright);border-color:rgba(168,199,250,.32)}
+.phone-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+.phone-brand{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.phone-title{font-family:"Clash Display",sans-serif;font-weight:500;font-size:1.35rem;line-height:1.1;margin-top:2px}
+.phone-meta{font-size:13.5px;color:var(--muted)}
+.storage-row{display:flex;flex-wrap:wrap;gap:6px}
+.storage-row button{
+  min-height:34px;padding:4px 11px;border-radius:999px;font-size:12.5px;font-weight:500;
+  background:rgba(242,242,238,.05);color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);
+  transition:all .25s var(--ease);
+}
+.storage-row button[aria-checked="true"]{
+  background:var(--accent);color:var(--accent-ink);box-shadow:none;
+}
+.phone-foot{
+  margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.phone-price b{display:block;font-family:"Clash Display",sans-serif;font-weight:500;font-size:1.15rem}
+.phone-price span{font-size:12px;color:var(--muted)}
+
+/* ---------- 04. Why Connectly? + Exploded Hardware Inspector ---------- */
+.why{padding:clamp(72px,10vw,140px) 0}
+.bento{display:grid;grid-template-columns:1fr;gap:14px}
+.b-feature .core{justify-content:space-between;gap:22px;min-height:210px}
+.card-ico{
+  width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
+  font-size:22px;color:var(--accent);background:rgba(168,199,250,.1);border:1px solid rgba(168,199,250,.22);
+}
+.card-title{font-family:"Clash Display",sans-serif;font-weight:500;font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.1}
+.card-body{color:var(--muted);font-size:15px;margin-top:8px;max-width:40ch}
+
+.b-exploded .core{padding:0}
+.exploded-grid{display:grid;grid-template-columns:1fr;height:100%}
+.exploded-stage{
+  position:relative;aspect-ratio:16/9;background:#07080a;overflow:hidden;
+}
+.exploded-stage canvas,.exploded-stage img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+}
+.exploded-info{padding:clamp(20px,2.8vw,32px);display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.exploded-ctrl{display:grid;gap:10px;margin-top:6px}
+.exploded-ctrl label{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.exploded-ctrl input[type="range"]{
+  width:100%;accent-color:var(--accent);height:28px;cursor:pointer;background:transparent;
+}
+
+/* ---------- Velocity Marquee ---------- */
+.marquee{overflow:hidden;padding:clamp(24px,3.5vw,44px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.marquee-track{display:flex;width:max-content;will-change:transform}
+.marquee-track span{
+  font-family:"Clash Display",sans-serif;font-weight:600;font-size:clamp(2.5rem,7.5vw,7rem);line-height:.92;
+  text-transform:uppercase;padding-right:.35em;white-space:nowrap;
+  color:transparent;-webkit-text-stroke:1.2px rgba(242,242,238,.36);
+}
+.marquee-track span em{font-style:normal;color:var(--accent);-webkit-text-stroke:0}
+
+/* ---------- 05. Accessories & Mobile Essentials ---------- */
+.accessories{padding:clamp(68px,9vw,120px) 0}
+.acc-track{
+  display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.acc-track::-webkit-scrollbar{display:none}
+.acc-card{flex:0 0 74vw;max-width:300px;scroll-snap-align:start}
+.acc-card .core{padding:18px;gap:14px;justify-content:space-between;min-height:220px}
+.acc-thumb{
+  height:112px;border-radius:14px;overflow:hidden;background:var(--bg-3);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--accent);font-size:32px;
+}
+.acc-thumb img{width:100%;height:100%;object-fit:cover}
+.acc-card h3{font-family:"Clash Display",sans-serif;font-weight:500;font-size:1.2rem}
+.acc-card p{font-size:14px;color:var(--muted);margin-top:4px}
+.acc-link{
+  display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;color:var(--accent);
+  min-height:36px;margin-top:auto;
+}
+
+/* ---------- 06. Meet the Owner / About Connectly ---------- */
+.about{padding:clamp(68px,9vw,130px) 0}
+.about-grid{display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch}
+.owner-frame .core{padding:0;min-height:360px;justify-content:flex-end}
+.owner-placeholder{
+  position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;
+  background:radial-gradient(circle at 50% 35%,rgba(168,199,250,.12),rgba(17,17,19,.98) 70%);
+}
+.owner-placeholder-inner{display:grid;gap:10px;justify-items:center;max-width:26ch}
+.owner-avatar{
+  width:76px;height:76px;border-radius:999px;display:grid;place-items:center;
+  background:rgba(242,242,238,.06);border:1px dashed var(--line-2);font-size:30px;color:var(--accent);
+}
+.owner-placeholder strong{font-family:"Clash Display",sans-serif;font-weight:500;font-size:1.1rem}
+.owner-placeholder span{font-size:13px;color:var(--muted)}
+.about-story .core{justify-content:center;gap:18px;padding:clamp(22px,4vw,48px)}
+.about-story h2{font-size:clamp(2rem,5.2vw,3.8rem);max-width:14ch}
+.about-story p{color:var(--muted);max-width:48ch;font-size:15.5px}
+.owner-quote{
+  padding:16px 18px;border-radius:16px;background:rgba(242,242,238,.03);border-left:2px solid var(--accent);
+  font-size:15px;color:var(--text);
+}
+.owner-meta{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:13.5px;color:var(--muted)}
+.owner-meta b{color:var(--text);font-weight:500}
+
+/* ---------- 07. Visit Our Store ---------- */
+.store{padding:clamp(68px,9vw,130px) 0}
+.store-layout{display:grid;grid-template-columns:1fr;gap:16px}
+.store-gallery{
+  display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;padding-bottom:6px;
+}
+.store-gallery::-webkit-scrollbar{display:none}
+.store-shot{flex:0 0 84vw;max-width:440px;scroll-snap-align:start}
+.store-shot .core{padding:0;aspect-ratio:4/4.2}
+.store-shot img{width:100%;height:100%;object-fit:cover}
+.store-shot-cap{
+  position:absolute;left:12px;right:12px;bottom:12px;padding:8px 12px;border-radius:12px;
+  background:rgba(10,10,11,.78);backdrop-filter:blur(10px);border:1px solid var(--line);
+  font-size:12.5px;color:var(--text);display:flex;justify-content:space-between;gap:8px;
+}
+.store-shot-cap span{color:var(--muted)}
+.store-shot-placeholder{
+  height:100%;display:grid;place-items:center;text-align:center;padding:24px;
+  background:radial-gradient(circle at center,rgba(242,242,238,.04),var(--bg-2));color:var(--muted);font-size:13.5px;
+}
+.store-info .core{gap:18px;justify-content:space-between;padding:clamp(22px,3.2vw,36px)}
+.store-details{display:grid;gap:14px}
+.store-row{display:flex;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.store-row:last-child{border-bottom:0;padding-bottom:0}
+.store-row i{font-size:20px;color:var(--accent);margin-top:2px;flex:none}
+.store-row strong{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.store-row span{display:block;font-size:15px;color:var(--text);margin-top:2px}
+.store-ctas{display:flex;flex-wrap:wrap;gap:10px}
+.store-ctas .btn{flex:1 1 auto}
+
+/* ---------- 08. Customer Experiences / Testimonials ---------- */
+.testimonials{padding:clamp(68px,9vw,130px) 0}
+.testi-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.testi-nav{display:flex;gap:8px}
+.testi-btn{
+  width:44px;height:44px;border-radius:999px;display:grid;place-items:center;
+  background:rgba(242,242,238,.06);box-shadow:inset 0 0 0 1px var(--line-2);
+  transition:background-color .3s var(--ease);
+}
+.testi-btn:hover{background:rgba(242,242,238,.12)}
+.testi-track{
+  display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;scroll-behavior:smooth;
+}
+.testi-track::-webkit-scrollbar{display:none}
+.testi-card{flex:0 0 100%;scroll-snap-align:center}
+.testi-card .core{gap:16px;justify-content:space-between;min-height:230px}
+.testi-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.testi-user{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:46px;height:46px;border-radius:999px;display:grid;place-items:center;
+  background:rgba(242,242,238,.06);border:1px dashed var(--line-2);color:var(--accent);font-size:20px;flex:none;
+}
+.testi-user b{display:block;font-weight:500;font-size:15px}
+.testi-user span{font-size:12.5px;color:var(--muted)}
+.testi-quote{font-size:15.5px;color:var(--muted);line-height:1.55}
+.testi-dots{display:flex;gap:6px;align-items:center}
+.testi-dots button{width:8px;height:8px;border-radius:999px;background:var(--line-2);transition:all .3s var(--ease)}
+.testi-dots button.active{width:22px;background:var(--accent)}
+
+/* ---------- 09. Final Call to Action ---------- */
+.final-cta{padding:clamp(56px,8vw,110px) 0 clamp(72px,10vw,140px)}
+.final-box .core{
+  padding:clamp(32px,6vw,76px) clamp(20px,5vw,64px);text-align:center;align-items:center;
+  min-height:380px;justify-content:center;gap:18px;
+}
+.final-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.34;pointer-events:none}
+.final-box .core::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at center,rgba(10,10,11,.35) 0%,rgba(10,10,11,.9) 85%);
+}
+.final-inner{position:relative;z-index:1;display:grid;gap:16px;justify-items:center;max-width:660px}
+.final-inner h2{font-size:clamp(2.2rem,6.5vw,4.8rem);text-transform:uppercase}
+.final-inner p{color:var(--muted);max-width:44ch}
+.final-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;width:100%;margin-top:6px}
+
+/* ---------- 10. Footer ---------- */
+footer{border-top:1px solid var(--line);padding-top:clamp(44px,6vw,76px);overflow:hidden}
+.foot-row{display:grid;grid-template-columns:1fr 1fr;gap:28px 20px}
+.foot-brand{grid-column:span 2}
+.foot-brand img{height:24px;width:auto;margin-bottom:14px}
+.foot-brand p{color:var(--muted);max-width:34ch;font-size:14.5px}
+.foot-row h4{font-size:12.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500;margin-bottom:12px}
+.foot-row ul{list-style:none;display:grid;gap:9px;font-size:14.5px}
+.foot-row a{transition:color .3s var(--ease)}
+.foot-row a:hover{color:var(--accent)}
+.wordmark{
+  font-family:"Clash Display",sans-serif;font-weight:700;
+  font-size:clamp(2.7rem,13.6vw,13.5rem);line-height:.78;letter-spacing:-.04em;
+  text-align:center;margin-top:clamp(36px,6vw,76px);display:flex;justify-content:center;user-select:none;
+}
+.wordmark span{
+  display:inline-block;
+  background:linear-gradient(to bottom,var(--text) 25%,rgba(242,242,238,.08));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.legal{
+  display:flex;flex-direction:column;gap:8px;padding:18px 0 24px;
+  color:var(--faint);font-size:13px;border-top:1px solid var(--line);margin-top:-1px;position:relative;background:var(--bg);
+}
+
+/* ---------- Enquiry Modal / Bottom Sheet ---------- */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:45;background:rgba(5,6,8,.76);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:grid;place-items:end center;padding:0;
+  opacity:0;visibility:hidden;transition:opacity .35s var(--ease),visibility 0s linear .35s;
+}
+.modal-backdrop.open{opacity:1;visibility:visible;transition:opacity .35s var(--ease)}
+.modal-sheet{
+  width:100%;max-width:520px;background:var(--bg-2);border:1px solid var(--line-2);
+  border-radius:24px 24px 0 0;padding:22px var(--gutter) 28px;
+  transform:translateY(28px);transition:transform .4s var(--ease);display:grid;gap:16px;
+}
+.modal-backdrop.open .modal-sheet{transform:none}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.modal-head h3{font-family:"Clash Display",sans-serif;font-weight:500;font-size:1.45rem}
+.modal-close{
+  width:40px;height:40px;border-radius:999px;display:grid;place-items:center;
+  background:rgba(242,242,238,.08);color:var(--text);font-size:18px;
+}
+.modal-summary{
+  padding:12px 14px;border-radius:14px;background:rgba(168,199,250,.08);
+  border:1px solid rgba(168,199,250,.22);font-size:14px;color:var(--text);
+}
+.modal-field{display:grid;gap:6px}
+.modal-field label{font-size:13px;color:var(--muted)}
+.modal-field textarea{
+  width:100%;min-height:84px;border-radius:14px;border:0;background:var(--bg);color:var(--text);
+  font:inherit;font-size:15px;padding:12px 14px;box-shadow:inset 0 0 0 1px var(--line-2);resize:vertical;
+}
+.modal-field textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--accent)}
+.modal-actions{display:grid;gap:10px}
+.modal-feedback{font-size:13px;color:var(--accent);min-height:18px}
+
+/* ---------- Tablet & Desktop Breakpoints ---------- */
+@media (min-width:640px){
+  .phone-grid{grid-template-columns:repeat(2,1fr)}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .b-exploded{grid-column:span 2}
+  .store-shot{flex:0 0 46vw}
+  .testi-card{flex:0 0 48%}
+  .modal-backdrop{place-items:center;padding:20px}
+  .modal-sheet{border-radius:24px;padding:28px}
+}
+@media (min-width:768px){
+  .hero{justify-content:flex-end;padding:110px 0 clamp(36px,5vw,64px)}
+  .hero-stage-spacer{display:none}
+  .hero-grid{grid-template-columns:1.15fr minmax(280px,420px);gap:40px}
+  .hero h1{font-size:clamp(3.2rem,7.2vw,6.8rem)}
+  .hero-ctas .btn{flex:0 0 auto}
+  .intro-stage-grid{grid-template-columns:1.1fr .9fr}
+  .intro-3d-spacer{display:none}
+  .about-grid{grid-template-columns:.85fr 1.15fr}
+  .owner-frame .core{min-height:460px}
+  .store-layout{grid-template-columns:1.35fr .9fr;align-items:stretch}
+  .store-gallery{display:grid;grid-template-columns:1.3fr .9fr;overflow:visible;padding-bottom:0}
+  .store-shot{flex:none;max-width:none}
+  .store-shot.is-main{grid-row:span 2}
+  .store-shot.is-main .core{aspect-ratio:auto;height:100%}
+  .legal{flex-direction:row;justify-content:space-between;align-items:center}
+}
+@media (min-width:1024px){
+  .nav-links{display:flex}
+  .nav-cta-desktop{display:inline-flex}
+  .nav-cta-mobile,.burger{display:none}
+  .phone-grid{grid-template-columns:repeat(3,1fr)}
+  .bento{grid-template-columns:repeat(4,1fr)}
+  .b-exploded{grid-column:span 4}
+  .exploded-grid{grid-template-columns:1.35fr 1fr}
+  .exploded-stage{aspect-ratio:auto;min-height:360px}
+  .acc-track{display:grid;grid-template-columns:repeat(5,1fr);overflow:visible;padding-bottom:0}
+  .acc-card{flex:none;max-width:none}
+  .testi-track{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible}
+  .testi-card{flex:none}
+  .testi-controls{display:none}
+  .foot-row{grid-template-columns:1.4fr repeat(3,1fr)}
+  .foot-brand{grid-column:span 1}
+}
+@media (prefers-reduced-motion:reduce){
+  .manifesto-text .w{opacity:1}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+</style>
+</head>
+<body class="is-loading">
+
+<!-- Fixed WebGL 3D Smartphone Stage -->
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<!-- Charging / Studio Preloader -->
+<div class="loader" aria-hidden="true">
+  <div class="loader-count display tnum"><span id="lc">000</span><small>%</small></div>
+  <div class="loader-bar"><i></i></div>
+  <div class="loader-meta"><span>CONNECTLY</span><span>Premium Mobile Retail</span></div>
+</div>
+
+<!-- Navigation -->
+<header class="nav">
+  <a href="#top" class="brand" aria-label="Connectly home">
+    <img src="assets/connectly-logo-white.png" alt="Connectly" width="104" height="32">
+  </a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#top">Home</a>
+    <a href="#mobiles">Mobiles</a>
+    <a href="#about">About</a>
+    <a href="#visit-store">Visit Store</a>
+    <a href="#contact">Contact</a>
+    <span class="nav-glide" aria-hidden="true"></span>
+  </nav>
+  <div class="nav-right">
+    <a href="#mobiles" class="nav-cta-mobile">Mobiles</a>
+    <a href="#visit-store" class="btn btn-primary btn-sm nav-cta-desktop">Visit Store<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></a>
+    <button class="burger" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="menu" aria-hidden="true">
+  <a href="#top">Home</a>
+  <a href="#mobiles">Mobiles</a>
+  <a href="#about">About</a>
+  <a href="#visit-store">Visit Store</a>
+  <a href="#contact" class="accent">Contact</a>
+  <div class="menu-foot">
+    <button type="button" class="btn btn-accent btn-sm js-enquire" data-item="General Device Enquiry">Enquire Now<span class="ico"><i class="ph-bold ph-chat-circle-dots"></i></span></button>
+    <a href="#visit-store" class="btn btn-ghost btn-sm">Store Location<span class="ico"><i class="ph-light ph-map-pin"></i></span></a>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- SECTION 01: CINEMATIC HERO -->
+  <section class="hero" aria-label="Connectly Hero">
+    <div class="hero-fade" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero-stage-spacer" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow"><span class="eyebrow-dot"></span>CONNECTLY · MOBILE RETAIL</span>
+          <h1 class="display">
+            <span class="line"><span>Premium Mobiles.</span></span>
+            <span class="line"><span class="accent">Better Connected.</span></span>
+          </h1>
+        </div>
+        <div class="hero-side">
+          <p><strong>Discover Connectly.</strong> Explore flagship smartphones, carefully selected pre-owned devices, and everyday mobile essentials.</p>
+          <div class="hero-ctas">
+            <a href="#mobiles" class="btn btn-primary">Explore Mobiles<span class="ico"><i class="ph-bold ph-arrow-down-right"></i></span></a>
+            <a href="#visit-store" class="btn btn-ghost">Visit Our Store<span class="ico"><i class="ph-light ph-map-pin"></i></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 02: BRAND INTRODUCTION -->
+  <section class="intro-stage" id="intro" aria-label="Brand Introduction">
+    <div class="wrap">
+      <div class="intro-3d-spacer" aria-hidden="true">
+        <span class="intro-3d-pill"><i class="ph-light ph-cube"></i>360° Titanium Showcase</span>
+      </div>
+      <div class="intro-stage-grid">
+        <div class="intro-copy">
+          <span class="eyebrow"><span class="eyebrow-dot"></span>The Connectly Way</span>
+          <h2 class="display">More than just a mobile store.</h2>
+          <p class="manifesto-text" id="mtext">At Connectly, finding your next smartphone should feel simple, <span class="pill-img" style="background-image:url(assets/hero-iphone-dark.webp)" role="img" aria-label="Dark titanium smartphone detail"></span> exciting, and trustworthy. Explore premium mobiles, discover great choices, <span class="pill-img" style="background-image:url(assets/store-cases.webp)" role="img" aria-label="Curated accessories inside Connectly"></span> and get the right device with a better buying experience.</p>
+        </div>
+        <div class="intro-visual-wrap">
+          <div class="shell intro-visual-shell">
+            <div class="core">
+              <img src="assets/hero-iphone-trio.webp" alt="Three titanium Pro smartphones presented in dramatic studio lighting" loading="lazy">
+              <div class="intro-visual-caption">
+                <span>Brand-New &amp; Pre-Owned Lineup</span>
+                <span class="accent">In-Store &amp; Enquiry</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 03: EXPLORE PREMIUM MOBILES -->
+  <section class="solid mobiles" id="mobiles" aria-label="Explore Premium Mobiles">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="eyebrow-dot"></span>Curated Devices</span>
+        <h2 class="display">Find your next phone.</h2>
+        <p>Explore premium smartphones that match your style, needs, and budget.</p>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-pills" role="group" aria-label="Filter mobile category">
+          <button type="button" data-cat="all" aria-pressed="true">All Mobiles</button>
+          <button type="button" data-cat="new" aria-pressed="false">Brand-New</button>
+          <button type="button" data-cat="preowned" aria-pressed="false">Pre-Owned</button>
+        </div>
+        <span class="sample-note"><i class="ph-light ph-info"></i>Sample listings — confirm live stock &amp; pricing via enquiry</span>
+      </div>
+
+      <!-- A. Brand-New Mobiles -->
+      <div class="cat-block" id="mobiles-new" data-group="new">
+        <div class="cat-head">
+          <div>
+            <h3>Brand-New Mobiles</h3>
+            <p class="muted">Factory-sealed flagship smartphones.</p>
+          </div>
+          <span class="cat-badge new"><i class="ph-bold ph-sparkle"></i>Sealed · Brand-New</span>
+        </div>
+
+        <div class="phone-grid">
+          <article class="shell phone-card">
+            <div class="core">
+              <div class="phone-media">
+                <img src="assets/hero-iphone-dark.webp" alt="Sample brand-new dark titanium flagship smartphone" loading="lazy">
+                <div class="phone-tags">
+                  <span class="tag-pill">Brand-New · Sealed</span>
+                  <span class="tag-pill sample">Sample</span>
+                </div>
+              </div>
+              <div class="phone-body">
+                <div>
+                  <div class="phone-brand">Apple · Sample Catalog</div>
+                  <h4 class="phone-title">iPhone 16 Pro</h4>
+                  <p class="phone-meta">Titanium finish · Sealed box</p>
+                </div>
+                <div class="storage-row" role="radiogroup" aria-label="iPhone 16 Pro storage">
+                  <button type="button" aria-checked="true" data-storage="128GB">128GB</button>
+                  <button type="button" aria-checked="false" data-storage="256GB">256GB</button>
+                  <button type="button" aria-checked="false" data-storage="512GB">512GB</button>
+                </div>
+                <div class="phone-foot">
+                  <div class="phone-price">
+                    <b>Price on Enquiry</b>
+                    <span>Confirm live availability</span>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm js-enquire" data-item="iPhone 16 Pro (Brand-New Sealed)">Enquire<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="shell phone-card">
+            <div class="core">
+              <div class="phone-media">
+                <img src="assets/hero-iphone-trio.webp" alt="Sample brand-new natural titanium Pro Max smartphone" loading="lazy">
+                <div class="phone-tags">
+                  <span class="tag-pill">Brand-New · Sealed</span>
+                  <span class="tag-pill sample">Sample</span>
+                </div>
+              </div>
+              <div class="phone-body">
+                <div>
+                  <div class="phone-brand">Apple · Sample Catalog</div>
+                  <h4 class="phone-title">iPhone 16 Pro Max</h4>
+                  <p class="phone-meta">Natural Titanium · Sealed box</p>
+                </div>
+                <div class="storage-row" role="radiogroup" aria-label="iPhone 16 Pro Max storage">
+                  <button type="button" aria-checked="true" data-storage="256GB">256GB</button>
+                  <button type="button" aria-checked="false" data-storage="512GB">512GB</button>
+                  <button type="button" aria-checked="false" data-storage="1TB">1TB</button>
+                </div>
+                <div class="phone-foot">
+                  <div class="phone-price">
+                    <b>Price on Enquiry</b>
+                    <span>Confirm live availability</span>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm js-enquire" data-item="iPhone 16 Pro Max (Brand-New Sealed)">Enquire<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="shell phone-card">
+            <div class="core">
+              <div class="phone-media is-light is-contain">
+                <img src="assets/phone-sample-front.webp" alt="Sample brand-new smartphone front display view" loading="lazy">
+                <div class="phone-tags">
+                  <span class="tag-pill">Brand-New · Sealed</span>
+                  <span class="tag-pill sample">Sample</span>
+                </div>
+              </div>
+              <div class="phone-body">
+                <div>
+                  <div class="phone-brand">Apple · Sample Catalog</div>
+                  <h4 class="phone-title">iPhone 16</h4>
+                  <p class="phone-meta">Multiple finishes · Sealed box</p>
+                </div>
+                <div class="storage-row" role="radiogroup" aria-label="iPhone 16 storage">
+                  <button type="button" aria-checked="true" data-storage="128GB">128GB</button>
+                  <button type="button" aria-checked="false" data-storage="256GB">256GB</button>
+                  <button type="button" aria-checked="false" data-storage="512GB">512GB</button>
+                </div>
+                <div class="phone-foot">
+                  <div class="phone-price">
+                    <b>Price on Enquiry</b>
+                    <span>Confirm live availability</span>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm js-enquire" data-item="iPhone 16 (Brand-New Sealed)">Enquire<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- B. Pre-Owned Mobiles -->
+      <div class="cat-block" id="mobiles-preowned" data-group="preowned">
+        <div class="cat-head">
+          <div>
+            <h3>Pre-Owned Mobiles</h3>
+            <p class="muted">Carefully selected pre-owned smartphones.</p>
+          </div>
+          <span class="cat-badge pre"><i class="ph-light ph-device-mobile"></i>Selected · Pre-Owned</span>
+        </div>
+
+        <div class="phone-grid">
+          <article class="shell phone-card">
+            <div class="core">
+              <div class="phone-media">
+                <img src="assets/phone-studio-pair.webp" alt="Sample pre-owned titanium smartphone front and rear studio view" loading="lazy">
+                <div class="phone-tags">
+                  <span class="tag-pill">Pre-Owned · Sample</span>
+                  <span class="tag-pill sample">Sample</span>
+                </div>
+              </div>
+              <div class="phone-body">
+                <div>
+                  <div class="phone-brand">Apple · Sample Catalog</div>
+                  <h4 class="phone-title">iPhone 15 Pro</h4>
+                  <p class="phone-meta">Condition: Sample (confirm in store)</p>
+                </div>
+                <div class="storage-row" role="radiogroup" aria-label="iPhone 15 Pro storage">
+                  <button type="button" aria-checked="true" data-storage="128GB">128GB</button>
+                  <button type="button" aria-checked="false" data-storage="256GB">256GB</button>
+                  <button type="button" aria-checked="false" data-storage="512GB">512GB</button>
+                </div>
+                <div class="phone-foot">
+                  <div class="phone-price">
+                    <b>Price on Enquiry</b>
+                    <span>Check store stock</span>
+                  </div>
+                  <button type="button" class="btn btn-accent btn-sm js-enquire" data-item="iPhone 15 Pro (Pre-Owned)">Enquire<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="shell phone-card">
+            <div class="core">
+              <div class="phone-media">
+                <img src="assets/phone-sample-duo.avif" alt="Sample pre-owned dual-angle smartphone in dark finish" loading="lazy">
+                <div class="phone-tags">
+                  <span class="tag-pill">Pre-Owned · Sample</span>
+                  <span class="tag-pill sample">Sample</span>
+                </div>
+              </div>
+              <div class="phone-body">
+                <div>
+                  <div class="phone-brand">Apple · Sample Catalog</div>
+                  <h4 class="phone-title">iPhone 15</h4>
+                  <p class="phone-meta">Condition: Sample (confirm in store)</p>
+                </div>
+                <div class="storage-row" role="radiogroup" aria-label="iPhone 15 storage">
+                  <button type="button" aria-checked="true" data-storage="128GB">128GB</button>
+                  <button type="button" aria-checked="false" data-storage="256GB">256GB</button>
+                </div>
+                <div class="phone-foot">
+                  <div class="phone-price">
+                    <b>Price on Enquiry</b>
+                    <span>Check store stock</span>
+                  </div>
+                  <button type="button" class="btn btn-accent btn-sm js-enquire" data-item="iPhone 15 (Pre-Owned)">Enquire<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="shell phone-card">
+            <div class="core">
+              <div class="phone-media">
+                <img src="assets/hero-iphone-dark.webp" alt="Sample pre-owned dark flagship smartphone" loading="lazy">
+                <div class="phone-tags">
+                  <span class="tag-pill">Pre-Owned · Sample</span>
+                  <span class="tag-pill sample">Sample</span>
+                </div>
+              </div>
+              <div class="phone-body">
+                <div>
+                  <div class="phone-brand">Apple · Sample Catalog</div>
+                  <h4 class="phone-title">iPhone 14 Pro</h4>
+                  <p class="phone-meta">Condition: Sample (confirm in store)</p>
+                </div>
+                <div class="storage-row" role="radiogroup" aria-label="iPhone 14 Pro storage">
+                  <button type="button" aria-checked="true" data-storage="128GB">128GB</button>
+                  <button type="button" aria-checked="false" data-storage="256GB">256GB</button>
+                  <button type="button" aria-checked="false" data-storage="512GB">512GB</button>
+                </div>
+                <div class="phone-foot">
+                  <div class="phone-price">
+                    <b>Price on Enquiry</b>
+                    <span>Check store stock</span>
+                  </div>
+                  <button type="button" class="btn btn-accent btn-sm js-enquire" data-item="iPhone 14 Pro (Pre-Owned)">Enquire<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 04: WHY CONNECTLY? -->
+  <section class="solid why" id="why-connectly" aria-label="Why Connectly">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="eyebrow-dot"></span>Why Connectly</span>
+        <h2 class="display">Your next phone. The right place.</h2>
+      </div>
+
+      <div class="bento">
+        <div class="shell b-feature">
+          <div class="core">
+            <div class="card-ico"><i class="ph-light ph-device-mobile-camera"></i></div>
+            <div>
+              <h3 class="card-title">Premium Mobile Selection</h3>
+              <p class="card-body">Explore a selection of premium smartphones.</p>
+            </div>
+          </div>
+        </div>
+        <div class="shell b-feature">
+          <div class="core">
+            <div class="card-ico"><i class="ph-light ph-arrows-left-right"></i></div>
+            <div>
+              <h3 class="card-title">New &amp; Pre-Owned Choices</h3>
+              <p class="card-body">Choose between brand-new sealed and pre-owned devices.</p>
+            </div>
+          </div>
+        </div>
+        <div class="shell b-feature">
+          <div class="core">
+            <div class="card-ico"><i class="ph-light ph-chat-circle-dots"></i></div>
+            <div>
+              <h3 class="card-title">Personal Assistance</h3>
+              <p class="card-body">Get help choosing a device that suits your requirements.</p>
+            </div>
+          </div>
+        </div>
+        <div class="shell b-feature">
+          <div class="core">
+            <div class="card-ico"><i class="ph-light ph-storefront"></i></div>
+            <div>
+              <h3 class="card-title">A Store You Can Visit</h3>
+              <p class="card-body">Experience the products and connect with us in person.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Exploded Hardware Showcase (replaces Volt Arc's mechanical teardown) -->
+        <div class="shell b-exploded">
+          <div class="core">
+            <div class="exploded-grid">
+              <div class="exploded-stage" id="explodedStage">
+                <img id="explodedFallback" src="assets/exploded/frame-01.webp" alt="Exploded internal layers of a flagship titanium smartphone" loading="lazy">
+                <canvas id="explodedCanvas" aria-hidden="true"></canvas>
+              </div>
+              <div class="exploded-info">
+                <div>
+                  <span class="eyebrow"><span class="eyebrow-dot"></span>Flagship Craftsmanship</span>
+                  <h3 class="card-title">Precision engineering, layer by layer.</h3>
+                  <p class="card-body">Drag or scroll to inspect the OLED panel, titanium mid-frame, battery architecture, logic board, and triple-lens camera assembly.</p>
+                </div>
+                <div class="exploded-ctrl">
+                  <label for="explodeRange"><span>Layer separation</span><span class="tnum" id="explodePct">0%</span></label>
+                  <input id="explodeRange" type="range" min="0" max="29" value="0" aria-label="Inspect exploded smartphone layers">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VELOCITY MARQUEE -->
+  <div class="solid marquee" aria-hidden="true">
+    <div class="marquee-track" id="mq">
+      <span>Connectly <em>/</em> Brand-New <em>/</em> Pre-Owned <em>/</em> Essentials <em>/</em></span>
+      <span>Connectly <em>/</em> Brand-New <em>/</em> Pre-Owned <em>/</em> Essentials <em>/</em></span>
+    </div>
+  </div>
+
+  <!-- SECTION 05: ACCESSORIES AND MOBILE ESSENTIALS -->
+  <section class="solid accessories" id="accessories" aria-label="Accessories and Mobile Essentials">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="eyebrow-dot"></span>Mobile Essentials</span>
+        <h2 class="display">Complete your setup.</h2>
+        <p>Explore accessories and everyday essentials for your smartphone.</p>
+      </div>
+
+      <div class="acc-track">
+        <article class="shell acc-card">
+          <div class="core">
+            <div class="acc-thumb">
+              <img src="assets/store-cases.webp" alt="Phone cases displayed on the Connectly wall rack" loading="lazy">
+            </div>
+            <div>
+              <h3>Phone Cases</h3>
+              <p>Slim, magnetic, and protective cases curated in store.</p>
+            </div>
+            <button type="button" class="acc-link js-enquire" data-item="Phone Cases Enquiry">Ask in store <i class="ph-bold ph-arrow-up-right"></i></button>
+          </div>
+        </article>
+
+        <article class="shell acc-card">
+          <div class="core">
+            <div class="acc-thumb"><i class="ph-light ph-lightning"></i></div>
+            <div>
+              <h3>Chargers</h3>
+              <p>Fast USB-C power adapters and wireless charging pads.</p>
+            </div>
+            <button type="button" class="acc-link js-enquire" data-item="Chargers Enquiry">Ask in store <i class="ph-bold ph-arrow-up-right"></i></button>
+          </div>
+        </article>
+
+        <article class="shell acc-card">
+          <div class="core">
+            <div class="acc-thumb"><i class="ph-light ph-plugs"></i></div>
+            <div>
+              <h3>Cables</h3>
+              <p>Durable braided USB-C and everyday charging cables.</p>
+            </div>
+            <button type="button" class="acc-link js-enquire" data-item="Cables Enquiry">Ask in store <i class="ph-bold ph-arrow-up-right"></i></button>
+          </div>
+        </article>
+
+        <article class="shell acc-card">
+          <div class="core">
+            <div class="acc-thumb"><i class="ph-light ph-shield-check"></i></div>
+            <div>
+              <h3>Screen Protection</h3>
+              <p>Tempered glass protection for edge-to-edge displays.</p>
+            </div>
+            <button type="button" class="acc-link js-enquire" data-item="Screen Protection Enquiry">Ask in store <i class="ph-bold ph-arrow-up-right"></i></button>
+          </div>
+        </article>
+
+        <article class="shell acc-card">
+          <div class="core">
+            <div class="acc-thumb"><i class="ph-light ph-headphones"></i></div>
+            <div>
+              <h3>Mobile Essentials</h3>
+              <p>Everyday audio, mounts, and smartphone add-ons.</p>
+            </div>
+            <button type="button" class="acc-link js-enquire" data-item="Mobile Accessories Enquiry">Ask in store <i class="ph-bold ph-arrow-up-right"></i></button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 06: MEET THE OWNER / ABOUT CONNECTLY -->
+  <section class="solid about" id="about" aria-label="Meet the Owner">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="shell owner-frame">
+          <div class="core">
+            <!-- Replace .owner-placeholder with <img src="assets/owner.webp" alt="..."> once portrait is supplied -->
+            <div class="owner-placeholder" role="img" aria-label="Owner portrait placeholder">
+              <div class="owner-placeholder-inner">
+                <div class="owner-avatar"><i class="ph-light ph-user"></i></div>
+                <strong>Owner Portrait Placeholder</strong>
+                <span>Ready for actual owner photograph when supplied.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shell about-story">
+          <div class="core">
+            <span class="eyebrow"><span class="eyebrow-dot"></span>About Connectly</span>
+            <h2 class="display">Built around better connections.</h2>
+            <p>Connectly was created to make buying a smartphone feel clear, personal, and genuinely welcoming — whether you are picking up a brand-new sealed flagship or a carefully chosen pre-owned device.</p>
+            <blockquote class="owner-quote">
+              “[Placeholder personal message from the founder — add your own note welcoming customers to Connectly and sharing what matters most when choosing a device.]”
+            </blockquote>
+            <div class="owner-meta">
+              <b>[Owner Name — Pending Confirmation]</b>
+              <span>Founder, Connectly</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 07: VISIT OUR STORE -->
+  <section class="solid store" id="visit-store" aria-label="Visit Our Store">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="eyebrow-dot"></span>Visit Connectly</span>
+        <h2 class="display">Come say hello.</h2>
+        <p>Step into the store to explore devices hands-on and talk directly with our team.</p>
+      </div>
+
+      <div class="store-layout">
+        <div class="store-gallery" aria-label="Connectly store photographs">
+          <figure class="shell store-shot is-main">
+            <div class="core">
+              <img src="assets/store-front.webp" alt="Connectly store exterior signage and glass entrance" loading="lazy">
+              <figcaption class="store-shot-cap"><strong>Connectly Storefront</strong><span>Actual photo</span></figcaption>
+            </div>
+          </figure>
+          <figure class="shell store-shot">
+            <div class="core">
+              <img src="assets/store-cases.webp" alt="Connectly interior smartphone accessory and case display rack" loading="lazy">
+              <figcaption class="store-shot-cap"><strong>Case &amp; Essentials Wall</strong><span>Actual photo</span></figcaption>
+            </div>
+          </figure>
+          <figure class="shell store-shot">
+            <div class="core">
+              <div class="store-shot-placeholder">
+                <div>
+                  <i class="ph-light ph-images" style="font-size:28px;color:var(--accent);margin-bottom:8px;display:block"></i>
+                  <strong>Store Interior Slot</strong>
+                  <span style="display:block;margin-top:4px">Placeholder for additional store counter or device table photo.</span>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+
+        <div class="shell store-info">
+          <div class="core">
+            <div class="store-details">
+              <div class="store-row">
+                <i class="ph-light ph-map-pin"></i>
+                <div>
+                  <strong>Store Location</strong>
+                  <span>[Store Address Placeholder — Add street, landmark &amp; city]</span>
+                </div>
+              </div>
+              <div class="store-row">
+                <i class="ph-light ph-clock"></i>
+                <div>
+                  <strong>Opening Hours</strong>
+                  <span>[Opening Hours Placeholder — Confirm daily hours]</span>
+                </div>
+              </div>
+              <div class="store-row">
+                <i class="ph-light ph-phone"></i>
+                <div>
+                  <strong>Contact</strong>
+                  <span>[Phone / WhatsApp Number Placeholder]</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="store-ctas">
+              <button type="button" class="btn btn-primary js-directions">Get Directions<span class="ico"><i class="ph-bold ph-navigation-arrow"></i></span></button>
+              <button type="button" class="btn btn-ghost js-enquire" data-item="Store Visit &amp; Availability">WhatsApp Us<span class="ico"><i class="ph-light ph-whatsapp-logo"></i></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 08: CUSTOMER EXPERIENCES / TESTIMONIALS -->
+  <section class="solid testimonials" id="testimonials" aria-label="Customer Experiences">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="eyebrow-dot"></span>Customer Stories</span>
+        <h2 class="display">Good phones. Good experiences.</h2>
+        <p>Verified customer photos and experiences will appear here once confirmed.</p>
+      </div>
+
+      <div class="testi-controls">
+        <div class="testi-dots" id="testiDots" aria-label="Testimonial slides"></div>
+        <div class="testi-nav">
+          <button type="button" class="testi-btn" id="testiPrev" aria-label="Previous testimonial"><i class="ph-bold ph-arrow-left"></i></button>
+          <button type="button" class="testi-btn" id="testiNext" aria-label="Next testimonial"><i class="ph-bold ph-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="testi-track" id="testiTrack">
+        <article class="shell testi-card">
+          <div class="core">
+            <div class="testi-top">
+              <div class="testi-user">
+                <div class="testi-avatar"><i class="ph-light ph-user"></i></div>
+                <div>
+                  <b>[Customer Name — Placeholder]</b>
+                  <span>Placeholder slot · 01</span>
+                </div>
+              </div>
+              <span class="tag-pill sample">Pending</span>
+            </div>
+            <p class="testi-quote">“Placeholder for a verified Connectly customer testimonial. Replace with a real customer quote and photograph once provided.”</p>
+          </div>
+        </article>
+
+        <article class="shell testi-card">
+          <div class="core">
+            <div class="testi-top">
+              <div class="testi-user">
+                <div class="testi-avatar"><i class="ph-light ph-user"></i></div>
+                <div>
+                  <b>[Customer Name — Placeholder]</b>
+                  <span>Placeholder slot · 02</span>
+                </div>
+              </div>
+              <span class="tag-pill sample">Pending</span>
+            </div>
+            <p class="testi-quote">“Placeholder for a verified Connectly customer testimonial. Replace with a real customer quote and photograph once provided.”</p>
+          </div>
+        </article>
+
+        <article class="shell testi-card">
+          <div class="core">
+            <div class="testi-top">
+              <div class="testi-user">
+                <div class="testi-avatar"><i class="ph-light ph-user"></i></div>
+                <div>
+                  <b>[Customer Name — Placeholder]</b>
+                  <span>Placeholder slot · 03</span>
+                </div>
+              </div>
+              <span class="tag-pill sample">Pending</span>
+            </div>
+            <p class="testi-quote">“Placeholder for a verified Connectly customer testimonial. Replace with a real customer quote and photograph once provided.”</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 09: FINAL CALL TO ACTION -->
+  <section class="solid final-cta" id="contact" aria-label="Final Call to Action">
+    <div class="wrap">
+      <div class="shell final-box">
+        <div class="core">
+          <img class="final-bg" src="assets/hero-iphone-dark.webp" alt="" aria-hidden="true" loading="lazy">
+          <div class="final-inner">
+            <span class="eyebrow"><span class="eyebrow-dot"></span>Connect With Us</span>
+            <h2 class="display">Ready for your next upgrade?</h2>
+            <p>Explore premium mobiles or get in touch with Connectly to find your next device.</p>
+            <div class="final-ctas">
+              <a href="#mobiles" class="btn btn-primary">Explore Mobiles<span class="ico"><i class="ph-bold ph-arrow-up-right"></i></span></a>
+              <button type="button" class="btn btn-accent js-enquire" data-item="Upgrade &amp; Device Consultation">Contact Connectly<span class="ico"><i class="ph-bold ph-whatsapp-logo"></i></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 10: FOOTER -->
+  <footer class="solid">
+    <div class="wrap foot-row">
+      <div class="foot-brand">
+        <a href="#top" aria-label="Connectly top"><img src="assets/connectly-logo-white.png" alt="Connectly" width="104" height="32"></a>
+        <p>Premium mobiles, carefully selected pre-owned smartphones, and everyday mobile essentials — better connected.</p>
+      </div>
+      <div>
+        <h4>Mobiles</h4>
+        <ul>
+          <li><a href="#mobiles">Premium Mobiles</a></li>
+          <li><a href="#mobiles-new">New Mobiles</a></li>
+          <li><a href="#mobiles-preowned">Pre-Owned Mobiles</a></li>
+          <li><a href="#accessories">Accessories</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connectly</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#visit-store">Visit Store</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Reach Us</h4>
+        <ul>
+          <li><a href="#contact" class="js-social" data-channel="Instagram">Instagram (Placeholder)</a></li>
+          <li><a href="#contact" class="js-enquire" data-item="WhatsApp Direct Enquiry">WhatsApp (Placeholder)</a></li>
+          <li><span class="muted">[Location &amp; Hours Pending]</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wordmark" aria-hidden="true"><span>C</span><span>O</span><span>N</span><span>N</span><span>E</span><span>C</span><span>T</span><span>L</span><span>Y</span></div>
+    <div class="wrap legal">
+      <span>© 2026 Connectly. All rights reserved.</span>
+      <span>Sample product listings &amp; store placeholders marked pending confirmation.</span>
+    </div>
+  </footer>
+</main>
+
+<!-- Enquiry / Store Contact Modal -->
+<div class="modal-backdrop" id="enquiryModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-sheet">
+    <div class="modal-head">
+      <h3 id="modalTitle">Enquire with Connectly</h3>
+      <button type="button" class="modal-close" id="modalClose" aria-label="Close enquiry dialog"><i class="ph-bold ph-x"></i></button>
+    </div>
+    <div class="modal-summary" id="modalSummary">Device: General Enquiry</div>
+    <div class="modal-field">
+      <label for="enquiryNote">Optional note (colour, budget, or trade-in question)</label>
+      <textarea id="enquiryNote" placeholder="Hi Connectly, I'd like to check availability and pricing..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-accent" id="sendWhatsappBtn">Send WhatsApp Enquiry<span class="ico"><i class="ph-bold ph-whatsapp-logo"></i></span></button>
+      <button type="button" class="btn btn-ghost" id="copyEnquiryBtn">Copy Enquiry Message<span class="ico"><i class="ph-light ph-copy"></i></span></button>
+    </div>
+    <div class="modal-feedback" id="modalFeedback" role="status" aria-live="polite"></div>
+  </div>
+</div>
+
+<script>
+/* Failsafe: never leave loader stuck if offline or script blocked */
+setTimeout(function(){var l=document.querySelector('.loader');if(l){l.remove();document.body.classList.remove('is-loading');}},5500);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { createPhone } from './assets/phone.js';
+
+/**
+ * Configure confirmed store details here before deployment.
+ * Leave empty strings while awaiting client confirmation.
+ */
+const CONNECTLY_CONFIG = {
+  whatsappNumber: '', // e.g. '919876543210' (country code + number, no +)
+  mapsQueryUrl: '',   // e.g. 'https://maps.google.com/?q=Connectly'
+  instagramUrl: '',   // e.g. 'https://instagram.com/connectly'
+};
+
+gsap.registerPlugin(ScrollTrigger);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = () => innerWidth < 768;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const smooth = t => t * t * (3 - 2 * t);
+
+/* ---------- Smooth Scroll (Lenis + GSAP ScrollTrigger) ---------- */
+let lenis = null;
+if (!reduce && typeof Lenis !== 'undefined') {
+  lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+  lenis.stop();
+}
+
+const burger = document.querySelector('.burger');
+const menuEl = document.querySelector('.menu');
+function closeMenu() {
+  document.body.classList.remove('menu-open');
+  if (burger) burger.setAttribute('aria-expanded', 'false');
+  if (menuEl) menuEl.setAttribute('aria-hidden', 'true');
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const id = a.getAttribute('href');
+  if (!id || id.length < 2) return;
+  const el = document.querySelector(id);
+  if (!el) return;
+  e.preventDefault();
+  closeMenu();
+  lenis ? lenis.scrollTo(el, { duration: 1.3 }) : el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+}));
+
+if (burger) {
+  burger.addEventListener('click', () => {
+    const open = document.body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded', String(open));
+    menuEl.setAttribute('aria-hidden', String(!open));
+  });
+}
+
+/* ---------- Nav Hover Glide Pill ---------- */
+{
+  const nl = document.querySelector('.nav-links');
+  const glide = nl?.querySelector('.nav-glide');
+  if (nl && glide) {
+    const qx = gsap.quickTo(glide, 'x', { duration: .45, ease: 'expo.out' });
+    const qw = gsap.quickTo(glide, 'width', { duration: .45, ease: 'expo.out' });
+    const move = (a, instant) => {
+      if (instant) {
+        gsap.set(glide, { x: a.offsetLeft, width: a.offsetWidth });
+        qx(a.offsetLeft, a.offsetLeft); qw(a.offsetWidth, a.offsetWidth);
+      } else { qx(a.offsetLeft); qw(a.offsetWidth); }
+      nl.classList.add('has-glide');
+    };
+    nl.querySelectorAll('a').forEach(a => {
+      a.addEventListener('pointerenter', () => move(a, !nl.classList.contains('has-glide')));
+      a.addEventListener('focus', () => move(a, !nl.classList.contains('has-glide')));
+    });
+    nl.addEventListener('pointerleave', () => nl.classList.remove('has-glide'));
+    nl.addEventListener('focusout', e => { if (!nl.contains(e.relatedTarget)) nl.classList.remove('has-glide'); });
+  }
+}
+
+/* =========================================================
+   3D WebGL Stage: Procedural Titanium Smartphone + Studio IBL
+   ========================================================= */
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+const DPR_MAX = Math.min(devicePixelRatio || 1, isMobile() ? 1.5 : 1.75);
+let dpr = DPR_MAX;
+renderer.setPixelRatio(dpr);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+renderer.shadowMap.enabled = !isMobile();
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+
+// Synthetic 6-softbox studio HDR environment (from VOLT Arc architecture)
+const pmrem = new THREE.PMREMGenerator(renderer);
+const studio = new THREE.Scene();
+studio.background = new THREE.Color(0x28303b);
+function softbox(w, h, x, y, z, intensity, color) {
+  const panel = new THREE.Mesh(
+    new THREE.PlaneGeometry(w, h),
+    new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }),
+  );
+  panel.material.color.multiplyScalar(intensity);
+  panel.position.set(x, y, z);
+  panel.lookAt(0, 0, 0);
+  studio.add(panel);
+}
+softbox(3, 7, -4, 3, 5, 4.8, 0xfff7ed);
+softbox(1.5, 6, 4, 1, 2, 3.2, 0xcce0ff);
+softbox(5, 2, 0, 5, -1, 4.0, 0xffffff);
+softbox(2, 4, -3, 0, -4, 2.2, 0xdfebff);
+softbox(2, 9, -6, 1, 0, 1.8, 0xffffff);
+softbox(6, 5, 0, 1, 7, 0.85, 0xf1f4f8);
+const studioMap = pmrem.fromScene(studio, 0.035);
+scene.environment = studioMap.texture;
+scene.environmentIntensity = 0.95;
+studio.traverse(o => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+pmrem.dispose();
+
+const camera = new THREE.PerspectiveCamera(26, 1, 0.1, 40);
+camera.position.set(0, 0, 5.2);
+
+const key = new THREE.DirectionalLight(0xfff6ea, 3.2); key.position.set(-3, 4, 5); scene.add(key);
+const rim = new THREE.DirectionalLight(0xa8c7fa, 2.8); rim.position.set(4.5, 1.8, -3.5); scene.add(rim);
+const back = new THREE.DirectionalLight(0xe2eaf5, 1.8); back.position.set(-2, -3, -5); scene.add(back);
+
+const { phone } = createPhone(scene, { scale: 9.2, rotationX: -0.1, rotationY: 0.45 });
+
+// Subtle ambient titanium speed/studio light filaments (fewer on mobile for perf)
+const LN = isMobile() ? 32 : 68;
+const lpos = new Float32Array(LN * 6);
+const lcol = new Float32Array(LN * 6);
+const lspd = new Float32Array(LN);
+for (let i = 0; i < LN; i++) {
+  const x = (Math.random() - .5) * 12;
+  const y = (Math.random() - .5) * 7;
+  const z = -1.5 - Math.random() * 5;
+  const len = 0.25 + Math.random() * 1.1;
+  lpos.set([x, y, z, x + len, y, z], i * 6);
+  const ice = Math.random() < .28;
+  const b = .18 + Math.random() * .38;
+  const c = ice ? [.65 * b * 1.3, .78 * b * 1.3, b * 1.45] : [b, b, b];
+  lcol.set([...c, 0, 0, 0], i * 6);
+  lspd[i] = .4 + Math.random() * 1.0;
+}
+const lgeo = new THREE.BufferGeometry();
+lgeo.setAttribute('position', new THREE.BufferAttribute(lpos, 3));
+lgeo.setAttribute('color', new THREE.BufferAttribute(lcol, 3));
+const lines = new THREE.LineSegments(
+  lgeo,
+  new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .14, blending: THREE.AdditiveBlending, depthWrite: false }),
+);
+scene.add(lines);
+
+// Separate stage targets for mobile & desktop so text and navbar are never obstructed
+const P = {
+  hero: () => isMobile()
+    ? { x: 0, y: 0.44, s: 5.2, rotY: 0.38, rotX: -0.07 }
+    : innerWidth < 1024
+      ? { x: 0, y: 0.26, s: 7.4, rotY: 0.36, rotX: -0.08 }
+      : { x: 0.68, y: -0.05, s: 8.2, rotY: -0.44, rotX: -0.08 },
+  intro: () => isMobile()
+    ? { x: 0, y: 0.66, s: 4.3, rotY: Math.PI + 0.38, rotX: 0.05 }
+    : { x: -0.78, y: -0.04, s: 7.8, rotY: Math.PI - 0.45, rotX: 0.06 },
+};
+const S = { ...P.hero(), opacity: 1, intro: reduce ? 1 : 0 };
+const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+addEventListener('pointermove', e => {
+  mouse.tx = (e.clientX / innerWidth) * 2 - 1;
+  mouse.ty = -((e.clientY / innerHeight) * 2 - 1);
+}, { passive: true });
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  if (window.scrollY < 40) Object.assign(S, P.hero());
+}
+resize();
+addEventListener('resize', () => {
+  resize();
+  if (ScrollTrigger) ScrollTrigger.refresh();
+});
+
+let last = performance.now(), slowAcc = 0, lastDprChange = 0;
+let glRunning = true, scrollIdleAt = 0, curDpr = dpr;
+
+function frame(now) {
+  const dt = Math.min(.05, (now - last) / 1000);
+  last = now;
+  canvas.style.opacity = S.opacity;
+  if (S.opacity <= 0.01) {
+    glRunning = false;
+    canvas.style.visibility = 'hidden';
+    return;
+  }
+
+  mouse.x += (mouse.tx - mouse.x) * .05;
+  mouse.y += (mouse.ty - mouse.y) * .05;
+  const vel = lenis ? Math.abs(lenis.velocity) : 0;
+  const t = now * 0.001;
+  const floatY = reduce ? 0 : Math.sin(t * 1.15) * 0.032;
+
+  const s = S.s * (0.82 + 0.18 * smooth(S.intro));
+  phone.scale.setScalar(s);
+  phone.position.set(S.x + mouse.x * .045, S.y + floatY + mouse.y * .035, 0);
+  phone.rotation.y = S.rotY + mouse.x * .08 + (1 - smooth(S.intro)) * 1.6;
+  phone.rotation.x = S.rotX - mouse.y * .045;
+
+  const ls = (0.9 + Math.min(vel * .2, 10)) * (reduce ? 0 : 1);
+  for (let i = 0; i < LN; i++) {
+    const o = i * 6, d = ls * lspd[i] * dt;
+    lpos[o] -= d; lpos[o + 3] -= d;
+    if (lpos[o + 3] < -6) {
+      const len = lpos[o + 3] - lpos[o];
+      lpos[o] = 6; lpos[o + 3] = 6 + len;
+    }
+  }
+  lgeo.attributes.position.needsUpdate = true;
+
+  if (vel > .4) scrollIdleAt = now + 220;
+  const want = now < scrollIdleAt ? Math.min(1, dpr) : dpr;
+  if (want !== curDpr) { curDpr = want; renderer.setPixelRatio(want); resize(); }
+
+  renderer.render(scene, camera);
+
+  slowAcc = slowAcc * .95 + (dt > .025 ? 1 : 0) * .05;
+  if (slowAcc > .6 && dpr > 1 && now - lastDprChange > 1500) {
+    dpr = Math.max(1, dpr - .25); lastDprChange = now; slowAcc = 0;
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+gsap.ticker.add(() => {
+  if (!glRunning && S.opacity > 0.01) {
+    glRunning = true;
+    canvas.style.visibility = '';
+    last = performance.now();
+    requestAnimationFrame(frame);
+  }
+});
+
+/* =========================================================
+   Preloader & Hero Intro
+   ========================================================= */
+const loader = document.querySelector('.loader');
+const heroLines = gsap.utils.toArray('.hero h1 .line > span');
+
+function runIntro() {
+  document.body.classList.remove('is-loading');
+  lenis && lenis.start();
+  if (reduce) { loader?.remove(); S.intro = 1; return; }
+  const tl = gsap.timeline();
+  tl.to(loader, { yPercent: -100, duration: 1.0, ease: 'expo.inOut', onComplete: () => loader?.remove() })
+    .to(S, { intro: 1, duration: 2.0, ease: 'expo.out' }, .25)
+    .from(heroLines, { yPercent: 115, duration: 1.1, ease: 'expo.out', stagger: .08 }, .45)
+    .from('.hero-side > *', { y: 26, opacity: 0, duration: .95, ease: 'expo.out', stagger: .08 }, .65)
+    .from('.nav > *', { y: -16, opacity: 0, duration: .85, ease: 'expo.out', stagger: .05 }, .55);
+}
+
+if (reduce) {
+  runIntro();
+} else {
+  const lc = document.getElementById('lc');
+  const bar = document.querySelector('.loader-bar i');
+  const ld = { v: 0 };
+  const loaded = new Promise(r => document.readyState === 'complete' ? r() : addEventListener('load', r));
+  gsap.to(ld, {
+    v: 100, duration: 1.35, ease: 'power2.inOut',
+    onUpdate: () => {
+      if (lc) lc.textContent = String(Math.round(ld.v)).padStart(3, '0');
+      if (bar) bar.style.transform = `scaleX(${ld.v / 100})`;
+    },
+    onComplete: () => loaded.then(runIntro),
+  });
+}
+
+/* =========================================================
+   Scroll Choreography
+   ========================================================= */
+// Hero -> Brand Intro 3D phone rotation (front OLED to rear triple-lens titanium camera)
+gsap.timeline({
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1, invalidateOnRefresh: true },
+})
+  .to(S, {
+    x: () => P.intro().x,
+    y: () => P.intro().y,
+    s: () => P.intro().s,
+    rotY: () => P.intro().rotY,
+    rotX: () => P.intro().rotX,
+    ease: 'none',
+  })
+  .to('.hero .wrap', { yPercent: -14, opacity: 0, ease: 'none' }, 0);
+
+// Fade the 3D stage out cleanly before the manifesto text & catalog arrive
+gsap.timeline({
+  scrollTrigger: { trigger: '.intro-copy', start: 'top 72%', end: 'top 25%', scrub: true },
+})
+  .to(S, { y: '+=1.1', ease: 'none' })
+  .to(S, { opacity: 0, ease: 'power1.in' }, 0);
+
+// Manifesto word-by-word scrub
+{
+  const p = document.getElementById('mtext');
+  if (p) {
+    [...p.childNodes].forEach(c => {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(t => {
+          if (!t) return;
+          if (/^\s+$/.test(t)) frag.append(t);
+          else { const s = document.createElement('span'); s.className = 'w'; s.textContent = t; frag.append(s); }
+        });
+        c.replaceWith(frag);
+      } else if (c.classList && c.classList.contains('pill-img')) {
+        c.classList.add('w');
+      }
+    });
+    if (!reduce) {
+      gsap.to('#mtext .w', {
+        opacity: 1, stagger: .08, ease: 'none',
+        scrollTrigger: { trigger: '#mtext', start: 'top 82%', end: 'bottom 52%', scrub: true },
+      });
+    }
+  }
+}
+
+// Staggered entrance reveals across cards & sections
+if (!reduce) {
+  gsap.utils.toArray('.section-head, .shell, .foot-row > div').forEach(el => {
+    gsap.from(el, {
+      y: 44, opacity: 0, duration: 1.0, ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+    });
+  });
+  gsap.from('.wordmark span', {
+    yPercent: 100, stagger: .05, duration: 1.15, ease: 'expo.out',
+    scrollTrigger: { trigger: '.wordmark', start: 'top 96%', once: true },
+  });
+}
+
+/* ---------- Velocity-Reactive Marquee ---------- */
+{
+  const mq = document.getElementById('mq');
+  let x = 0, dir = -1;
+  if (mq && !reduce) {
+    gsap.ticker.add((t, dtms) => {
+      const v = lenis ? lenis.velocity : 0;
+      if (Math.abs(v) > .5) dir = v > 0 ? -1 : 1;
+      x += dir * (0.55 + Math.min(Math.abs(v) * .28, 10)) * (dtms / 16.67);
+      const w = mq.scrollWidth / 2;
+      if (w > 0) {
+        if (x < -w) x += w;
+        if (x > 0) x -= w;
+        mq.style.transform = `translate3d(${x}px,0,0)`;
+      }
+    });
+  }
+}
+
+/* =========================================================
+   Interactive Exploded iPhone Sequence (Lazy-Loaded)
+   ========================================================= */
+{
+  const TOTAL = 30;
+  const stage = document.getElementById('explodedStage');
+  const cv = document.getElementById('explodedCanvas');
+  const fallbackImg = document.getElementById('explodedFallback');
+  const range = document.getElementById('explodeRange');
+  const pct = document.getElementById('explodePct');
+  const ctx = cv?.getContext('2d');
+  const frames = new Array(TOTAL);
+  let loadedOnce = false;
+  let currentIdx = 0;
+
+  function drawFrame(idx) {
+    currentIdx = clamp(Math.round(idx), 0, TOTAL - 1);
+    if (pct) pct.textContent = `${Math.round((currentIdx / (TOTAL - 1)) * 100)}%`;
+    if (range && Number(range.value) !== currentIdx) range.value = String(currentIdx);
+    const img = frames[currentIdx];
+    if (!ctx || !cv || !img || !img.complete || !img.naturalWidth) return;
+    const w = cv.clientWidth || 960;
+    const h = cv.clientHeight || 540;
+    const scale = Math.min(devicePixelRatio || 1, 2);
+    if (cv.width !== Math.round(w * scale) || cv.height !== Math.round(h * scale)) {
+      cv.width = Math.round(w * scale);
+      cv.height = Math.round(h * scale);
+    }
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    // Cover crop
+    const ir = img.naturalWidth / img.naturalHeight;
+    const cr = w / h;
+    let dw = w, dh = h, dx = 0, dy = 0;
+    if (ir > cr) { dw = h * ir; dx = (w - dw) / 2; }
+    else { dh = w / ir; dy = (h - dh) / 2; }
+    ctx.clearRect(0, 0, w, h);
+    ctx.drawImage(img, dx, dy, dw, dh);
+    if (fallbackImg) fallbackImg.style.opacity = '0';
+  }
+
+  function preloadFrames() {
+    if (loadedOnce) return;
+    loadedOnce = true;
+    for (let i = 0; i < TOTAL; i++) {
+      const im = new Image();
+      im.src = `assets/exploded/frame-${String(i + 1).padStart(2, '0')}.webp`;
+      im.onload = () => { if (i === currentIdx) drawFrame(currentIdx); };
+      frames[i] = im;
+    }
+  }
+
+  if (stage) {
+    new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) preloadFrames();
+    }, { rootMargin: '300px' }).observe(stage);
+
+    let userInteracting = false;
+    range?.addEventListener('input', () => {
+      preloadFrames();
+      userInteracting = true;
+      drawFrame(Number(range.value));
+    });
+
+    if (!reduce) {
+      ScrollTrigger.create({
+        trigger: stage,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        scrub: true,
+        onUpdate: self => {
+          if (!userInteracting) {
+            preloadFrames();
+            drawFrame(self.progress * (TOTAL - 1));
+          }
+        },
+      });
+    }
+    addEventListener('resize', () => drawFrame(currentIdx));
+  }
+}
+
+/* =========================================================
+   Category Filter & Storage Variant Selection
+   ========================================================= */
+{
+  const filterBtns = document.querySelectorAll('.filter-pills button');
+  const groups = document.querySelectorAll('.cat-block');
+  filterBtns.forEach(btn => btn.addEventListener('click', () => {
+    const cat = btn.dataset.cat;
+    filterBtns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    groups.forEach(g => {
+      const show = cat === 'all' || g.dataset.group === cat;
+      g.hidden = !show;
+    });
+    ScrollTrigger.refresh();
+  }));
+
+  document.querySelectorAll('.storage-row').forEach(row => {
+    row.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+      row.querySelectorAll('button').forEach(b => b.setAttribute('aria-checked', String(b === btn)));
+    }));
+  });
+}
+
+/* =========================================================
+   Testimonials Mobile Carousel Controls
+   ========================================================= */
+{
+  const track = document.getElementById('testiTrack');
+  const dotsWrap = document.getElementById('testiDots');
+  const prevBtn = document.getElementById('testiPrev');
+  const nextBtn = document.getElementById('testiNext');
+  if (track && dotsWrap) {
+    const cards = [...track.querySelectorAll('.testi-card')];
+    cards.forEach((_, idx) => {
+      const d = document.createElement('button');
+      d.type = 'button';
+      d.setAttribute('aria-label', `Go to testimonial ${idx + 1}`);
+      if (idx === 0) d.classList.add('active');
+      d.addEventListener('click', () => cards[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }));
+      dotsWrap.append(d);
+    });
+    const dots = [...dotsWrap.children];
+    const updateDots = () => {
+      const cw = cards[0]?.offsetWidth || 1;
+      const active = clamp(Math.round(track.scrollLeft / cw), 0, cards.length - 1);
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+      return active;
+    };
+    track.addEventListener('scroll', updateDots, { passive: true });
+    prevBtn?.addEventListener('click', () => {
+      const idx = Math.max(0, updateDots() - 1);
+      cards[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+    nextBtn?.addEventListener('click', () => {
+      const idx = Math.min(cards.length - 1, updateDots() + 1);
+      cards[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+  }
+}
+
+/* =========================================================
+   Interactive Enquiry Modal, WhatsApp & Store Directions
+   ========================================================= */
+{
+  const modal = document.getElementById('enquiryModal');
+  const closeBtn = document.getElementById('modalClose');
+  const summaryEl = document.getElementById('modalSummary');
+  const noteEl = document.getElementById('enquiryNote');
+  const waBtn = document.getElementById('sendWhatsappBtn');
+  const copyBtn = document.getElementById('copyEnquiryBtn');
+  const feedbackEl = document.getElementById('modalFeedback');
+  let activeSubject = 'General Enquiry';
+
+  function openModal(subject) {
+    activeSubject = subject;
+    summaryEl.textContent = `Enquiry: ${subject}`;
+    feedbackEl.textContent = '';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    closeMenu();
+    setTimeout(() => noteEl?.focus(), 120);
+  }
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  document.querySelectorAll('.js-enquire').forEach(btn => {
+    btn.addEventListener('click', () => {
+      let subject = btn.dataset.item || 'Device Enquiry';
+      const card = btn.closest('.phone-card');
+      const selectedStorage = card?.querySelector('.storage-row button[aria-checked="true"]')?.dataset.storage;
+      if (selectedStorage) subject += ` — ${selectedStorage}`;
+      openModal(subject);
+    });
+  });
+
+  closeBtn?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && modal?.classList.contains('open')) closeModal(); });
+
+  const buildMsg = () => {
+    const extra = noteEl.value.trim();
+    return `Hi Connectly, I am enquiring about: ${activeSubject}.${extra ? ' Note: ' + extra : ''}`;
+  };
+
+  waBtn?.addEventListener('click', () => {
+    const msg = encodeURIComponent(buildMsg());
+    if (CONNECTLY_CONFIG.whatsappNumber) {
+      window.open(`https://wa.me/${CONNECTLY_CONFIG.whatsappNumber}?text=${msg}`, '_blank', 'noopener');
+      feedbackEl.textContent = 'Opening WhatsApp...';
+    } else {
+      feedbackEl.textContent = 'WhatsApp number placeholder: add CONNECTLY_CONFIG.whatsappNumber in index.html to launch WhatsApp directly, or copy the enquiry below.';
+    }
+  });
+
+  copyBtn?.addEventListener('click', async () => {
+    const text = buildMsg();
+    try {
+      await navigator.clipboard.writeText(text);
+      feedbackEl.textContent = 'Enquiry message copied to clipboard.';
+    } catch {
+      feedbackEl.textContent = text;
+    }
+  });
+
+  document.querySelectorAll('.js-directions').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (CONNECTLY_CONFIG.mapsQueryUrl) {
+        window.open(CONNECTLY_CONFIG.mapsQueryUrl, '_blank', 'noopener');
+      } else {
+        openModal('Store Directions & Location');
+        feedbackEl.textContent = 'Add CONNECTLY_CONFIG.mapsQueryUrl in index.html once the store Google Maps pin is confirmed.';
+      }
+    });
+  });
+
+  document.querySelectorAll('.js-social').forEach(link => {
+    link.addEventListener('click', e => {
+      if (!CONNECTLY_CONFIG.instagramUrl) {
+        e.preventDefault();
+        openModal('Instagram / Social Contact');
+        feedbackEl.textContent = 'Add CONNECTLY_CONFIG.instagramUrl in index.html once confirmed.';
+      } else {
+        link.href = CONNECTLY_CONFIG.instagramUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+      }
+    });
+  });
+}
+
+addEventListener('load', () => ScrollTrigger.refresh());
+</script>
+</body>
+</html>
